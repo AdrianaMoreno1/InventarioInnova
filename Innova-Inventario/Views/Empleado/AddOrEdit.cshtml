@@ -1,0 +1,38 @@
+﻿@model Innova_Inventario.Models.empleado
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("AddOrEdit","empleado",FormMethod.Post, new {onsubmit = "return SubmitForm(this)" }))
+{
+    @Html.HiddenFor(model => model.id_empleado)
+    <div class="form-group">
+    @Html.LabelFor(model => model.no_empleado, new {@class="control-label"})
+    @Html.EditorFor(model => model.no_empleado, new { htmlAttributes = new {@class="form-control"}})
+    @Html.ValidationMessageFor(model => model.no_empleado)
+    </div>
+
+     <div class="form-group">
+    @Html.LabelFor(model => model.nombre, new {@class="control-label"})
+    @Html.EditorFor(model => model.nombre, new { htmlAttributes = new {@class="form-control"}})
+    @Html.ValidationMessageFor(model => model.nombre)
+    </div>
+
+    <div class="form-group">
+    @Html.LabelFor(model => model.apellidos, new {@class="control-label"})
+    @Html.EditorFor(model => model.apellidos, new { htmlAttributes = new {@class="form-control"}})
+    @Html.ValidationMessageFor(model => model.apellidos)
+    </div>
+
+   <div class="form-group">
+    @Html.LabelFor(model => model.puesto, new {@class="control-label"})
+    @Html.EditorFor(model => model.puesto, new { htmlAttributes = new {@class="form-control"}})
+    @Html.ValidationMessageFor(model => model.puesto)
+    </div>
+
+     <div class="form-group">
+        <input type="submit" value="Guardar" class="btn btn-primary" /> 
+        <input type="reset" value="Limpiar" class="btn" /> 
+    </div>
+
+}

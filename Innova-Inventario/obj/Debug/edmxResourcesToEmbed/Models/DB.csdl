@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Inventario_InnovaModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DBModel" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="asignacion" EntityType="Inventario_InnovaModel.asignacion" />
+    <EntitySet Name="empleado" EntityType="Inventario_InnovaModel.empleado" />
+    <EntitySet Name="equipo" EntityType="Inventario_InnovaModel.equipo" />
+    <EntitySet Name="permisos" EntityType="Inventario_InnovaModel.permisos" />
+    <EntitySet Name="sysdiagrams" EntityType="Inventario_InnovaModel.sysdiagrams" />
+    <EntitySet Name="tipo_equipo" EntityType="Inventario_InnovaModel.tipo_equipo" />
+    <EntitySet Name="usuarios" EntityType="Inventario_InnovaModel.usuarios" />
+    <AssociationSet Name="FK_asignacion_empleado" Association="Inventario_InnovaModel.FK_asignacion_empleado">
+      <End Role="empleado" EntitySet="empleado" />
+      <End Role="asignacion" EntitySet="asignacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_asignacion_equipo" Association="Inventario_InnovaModel.FK_asignacion_equipo">
+      <End Role="equipo" EntitySet="equipo" />
+      <End Role="asignacion" EntitySet="asignacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_usuarios_empleado" Association="Inventario_InnovaModel.FK_usuarios_empleado">
+      <End Role="empleado" EntitySet="empleado" />
+      <End Role="usuarios" EntitySet="usuarios" />
+    </AssociationSet>
+    <AssociationSet Name="FK_equipo_tipo_equipo" Association="Inventario_InnovaModel.FK_equipo_tipo_equipo">
+      <End Role="tipo_equipo" EntitySet="tipo_equipo" />
+      <End Role="equipo" EntitySet="equipo" />
+    </AssociationSet>
+    <AssociationSet Name="usuario_tiene_permiso" Association="Inventario_InnovaModel.usuario_tiene_permiso">
+      <End Role="permisos" EntitySet="permisos" />
+      <End Role="usuarios" EntitySet="usuarios" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="asignacion">
+    <Key>
+      <PropertyRef Name="id_empleado" />
+      <PropertyRef Name="estado" />
+      <PropertyRef Name="fecha" />
+    </Key>
+    <Property Name="id_empleado" Type="Int32" Nullable="false" />
+    <Property Name="id_equipo" Type="Int32" />
+    <Property Name="estado" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+    <NavigationProperty Name="empleado" Relationship="Inventario_InnovaModel.FK_asignacion_empleado" FromRole="asignacion" ToRole="empleado" />
+    <NavigationProperty Name="equipo" Relationship="Inventario_InnovaModel.FK_asignacion_equipo" FromRole="asignacion" ToRole="equipo" />
+  </EntityType>
+  <EntityType Name="empleado">
+    <Key>
+      <PropertyRef Name="id_empleado" />
+    </Key>
+    <Property Name="id_empleado" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="no_empleado" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="apellidos" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="puesto" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="asignacion" Relationship="Inventario_InnovaModel.FK_asignacion_empleado" FromRole="empleado" ToRole="asignacion" />
+    <NavigationProperty Name="usuarios" Relationship="Inventario_InnovaModel.FK_usuarios_empleado" FromRole="empleado" ToRole="usuarios" />
+  </EntityType>
+  <EntityType Name="equipo">
+    <Key>
+      <PropertyRef Name="id_equipo" />
+    </Key>
+    <Property Name="id_equipo" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="no_serie" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="marca" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="modelo" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <Property Name="id_tipo" Type="Int32" Nullable="false" />
+    <Property Name="estado" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <NavigationProperty Name="asignacion" Relationship="Inventario_InnovaModel.FK_asignacion_equipo" FromRole="equipo" ToRole="asignacion" />
+    <NavigationProperty Name="tipo_equipo" Relationship="Inventario_InnovaModel.FK_equipo_tipo_equipo" FromRole="equipo" ToRole="tipo_equipo" />
+  </EntityType>
+  <EntityType Name="permisos">
+    <Key>
+      <PropertyRef Name="id_permiso" />
+    </Key>
+    <Property Name="id_permiso" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre_catalogo" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="usuarios" Relationship="Inventario_InnovaModel.usuario_tiene_permiso" FromRole="permisos" ToRole="usuarios" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="tipo_equipo">
+    <Key>
+      <PropertyRef Name="id_tipo" />
+    </Key>
+    <Property Name="id_tipo" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="descripcion" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="equipo" Relationship="Inventario_InnovaModel.FK_equipo_tipo_equipo" FromRole="tipo_equipo" ToRole="equipo" />
+  </EntityType>
+  <EntityType Name="usuarios">
+    <Key>
+      <PropertyRef Name="id_usuario" />
+    </Key>
+    <Property Name="id_usuario" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="id_empleado" Type="Int32" Nullable="false" />
+    <Property Name="contrasena" Type="String" Nullable="false" MaxLength="50" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="empleado" Relationship="Inventario_InnovaModel.FK_usuarios_empleado" FromRole="usuarios" ToRole="empleado" />
+    <NavigationProperty Name="permisos" Relationship="Inventario_InnovaModel.usuario_tiene_permiso" FromRole="usuarios" ToRole="permisos" />
+  </EntityType>
+  <Association Name="FK_asignacion_empleado">
+    <End Role="empleado" Type="Inventario_InnovaModel.empleado" Multiplicity="1" />
+    <End Role="asignacion" Type="Inventario_InnovaModel.asignacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="empleado">
+        <PropertyRef Name="id_empleado" />
+      </Principal>
+      <Dependent Role="asignacion">
+        <PropertyRef Name="id_empleado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_asignacion_equipo">
+    <End Role="equipo" Type="Inventario_InnovaModel.equipo" Multiplicity="0..1" />
+    <End Role="asignacion" Type="Inventario_InnovaModel.asignacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="equipo">
+        <PropertyRef Name="id_equipo" />
+      </Principal>
+      <Dependent Role="asignacion">
+        <PropertyRef Name="id_equipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_usuarios_empleado">
+    <End Role="empleado" Type="Inventario_InnovaModel.empleado" Multiplicity="1" />
+    <End Role="usuarios" Type="Inventario_InnovaModel.usuarios" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="empleado">
+        <PropertyRef Name="id_empleado" />
+      </Principal>
+      <Dependent Role="usuarios">
+        <PropertyRef Name="id_usuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_equipo_tipo_equipo">
+    <End Role="tipo_equipo" Type="Inventario_InnovaModel.tipo_equipo" Multiplicity="1" />
+    <End Role="equipo" Type="Inventario_InnovaModel.equipo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipo_equipo">
+        <PropertyRef Name="id_tipo" />
+      </Principal>
+      <Dependent Role="equipo">
+        <PropertyRef Name="id_tipo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="usuario_tiene_permiso">
+    <End Role="permisos" Type="Inventario_InnovaModel.permisos" Multiplicity="*" />
+    <End Role="usuarios" Type="Inventario_InnovaModel.usuarios" Multiplicity="*" />
+  </Association>
+</Schema>
